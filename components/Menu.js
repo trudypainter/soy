@@ -87,7 +87,7 @@ export default function Menu({ projects }) {
   }, []);
 
   return (
-    <div className="w-[300px] flex-shrink-0 fixed h-screen ">
+    <div className="w-[300px] flex-shrink-0 fixed h-screen text-xs ">
       <div
         className="w-full h-full flex flex-col bg-white
        text-black border-r-[0.5px] border-black
@@ -148,6 +148,7 @@ export default function Menu({ projects }) {
                   to={project.id}
                   spy={true}
                   smooth={true}
+                  offset={isPhone ? -50 : 0} // Add this line for phone offset
                   className={`w-full flex justify-between items-center px-4 py-1
               border-b-[0.8px] border-[#1c1c1c] 
 

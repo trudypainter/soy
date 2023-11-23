@@ -41,18 +41,23 @@ export default function Home() {
           <Menu projects={projects} />
         </div>
 
-        <div className="flex-grow ml-[300px] phone:ml-0">
-          <div id="soy" className="p-4 py-32 text-black w-[500px]">
-            Hi, I'm Soyeon. <br></br>
-            I'm a motion designer specializing in branding from Seoul, based in
-            NYC. I'm currently a designer at Google Creative Lab.
-            <br></br>
-            <br></br>
-            Read more about me{" "}
-            <a className="underline" href="/about">
-              here
-            </a>
-            .
+        <div className="flex-grow ml-[300px] phone:ml-0 w-full">
+          <div id="soy" className="p-8 text-xl pt-24  text-black w-full">
+            <div className="max-w-[550px] leading-snug">
+              <div>Hi, I'm Soyeon.</div>
+              <div>
+                I'm a motion designer specializing in branding from Seoul, based
+                in NYC. I'm currently a designer at Google Creative Lab.
+              </div>
+              <div className="mt-8">
+                Read more about me{" "}
+                <a className="underline" href="/about">
+                  here
+                </a>
+                .
+              </div>
+            </div>
+            <div className="bg-gray-100 mt-2 w-full h-96"></div>
           </div>
           {projects.slice(1).map((project, index) => (
             <Section key={index} project={project}></Section>

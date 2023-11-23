@@ -10,6 +10,11 @@ module.exports = {
         aeonik: ["Aeonik", "sans-serif"],
         brut: ["BrutGrotesque", "sans-serif"],
       },
+      fontSize: {
+        base: "16px", // default text size
+        xl: "20px", // text-xl
+        xs: "12px", // text-xs
+      },
     },
   },
   variants: {
