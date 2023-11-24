@@ -1,9 +1,7 @@
 import { Link, animateScroll as scroll, Events, scrollSpy } from "react-scroll";
 import { useState, useEffect } from "react";
 
-export default function Menu({ projects }) {
-  const projectTypes = ["work", "playground", "bookshelf"];
-
+export default function Menu({ posts }) {
   // Add a new state to track the active section
   const [activeSection, setActiveSection] = useState("");
 
@@ -18,10 +16,11 @@ export default function Menu({ projects }) {
     };
   }, []);
 
-  // Group projects by type
-  const groupedProjects = projectTypes.map((type) => ({
+  // Group posts by type
+  const postTypes = ["Work", "Playground", "Bookshelf"];
+  const groupedposts = postTypes.map((type) => ({
     type,
-    projects: projects.filter((project) => project.type === type),
+    posts: posts.filter((post) => post.type === type),
   }));
 
   // States for typewriter effect
@@ -131,7 +130,7 @@ export default function Menu({ projects }) {
            
           "
         >
-          {groupedProjects.map((group, index) => (
+          {groupedposts.map((group, index) => (
             <div
               className="phone:flex mt-8 phone:mt-0 phone:space-x-2 "
               key={index}
@@ -141,11 +140,11 @@ export default function Menu({ projects }) {
                   {group.type.toUpperCase()}
                 </h2>
               )}
-              {group.projects.map((project, index) => (
+              {group.posts.map((post, index) => (
                 <Link
                   key={index}
                   activeClass="text-red-500 "
-                  to={project.id}
+                  to={post.title}
                   spy={true}
                   smooth={true}
                   offset={isPhone ? -50 : 0} // Add this line for phone offset
@@ -154,12 +153,10 @@ export default function Menu({ projects }) {
 
               phone:border-none phone:w-fit
                hover:text-red-500 hover:cursor-pointer phone:min-w-max 
-              ${activeSection === project.id ? "active" : ""}`}
+              ${activeSection === post.id ? "active" : ""}`}
                 >
-                  <div className="">{project.title}</div>
-                  {!isPhone && (
-                    <div className="text-xs">{project.subtitle}</div>
-                  )}
+                  <div className="">{post.title}</div>
+                  {!isPhone && <div className="text-xs">{post.menuTag}</div>}
                 </Link>
               ))}
             </div>

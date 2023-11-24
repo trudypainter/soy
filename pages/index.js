@@ -5,11 +5,37 @@ import React, { useState, useEffect } from "react";
 import { Link, animateScroll as scroll, Events, scrollSpy } from "react-scroll";
 import Menu from "../components/Menu";
 import Section from "../components/Section";
-import { projects } from "../data/projects";
+import { createClient } from "next-sanity";
 
-export default function Home() {
-  const projectTypes = ["work", "playground", "bookshelf"];
+const client = createClient({
+  projectId: "tqbcbz9e",
+  dataset: "production",
+  apiVersion: "2022-03-25",
+  useCdn: false,
+});
 
+export async function getStaticProps() {
+  const ogPosts = await client.fetch(`*[_type == "post"]{
+    ...,
+    "categories": categories[]->value
+  }`);
+
+  // Define the order of post types
+  const postTypes = ["Work", "Playground", "Bookshelf"];
+
+  // Filter posts by type and flatten the array
+  const posts = postTypes.flatMap((type) =>
+    ogPosts.filter((post) => post.type === type)
+  );
+
+  return {
+    props: {
+      posts,
+    },
+  };
+}
+
+export default function Home({ posts }) {
   useEffect(() => {
     Events.scrollEvent.register("begin", function () {
       console.log("begin", arguments);
@@ -38,7 +64,7 @@ export default function Home() {
 
       <main className="flex font-aeonik">
         <div className="z-50">
-          <Menu projects={projects} />
+          <Menu posts={posts} />
         </div>
 
         <div className="flex-grow ml-[300px] phone:ml-0 w-full">
@@ -59,8 +85,8 @@ export default function Home() {
             </div>
             <div className="bg-gray-100 mt-2 w-full h-96"></div>
           </div>
-          {projects.slice(1).map((project, index) => (
-            <Section key={index} project={project}></Section>
+          {posts.map((post, index) => (
+            <Section key={index} client={client} post={post}></Section>
           ))}
           <div className="py-96 p-2 border-0 border-t-[0.5px] border-black">
             Thanks for making it to the end of the page! Leave a note for me...
