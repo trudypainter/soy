@@ -11,32 +11,43 @@ const client = createClient({
   projectId: "tqbcbz9e",
   dataset: "production",
   apiVersion: "2022-03-25",
-  useCdn: false,
+  useCdn: true,
 });
 
 export async function getStaticProps() {
   const ogPosts = await client.fetch(`*[_type == "post"]{
-    ...,
-    "categories": categories[]->value
+    "title": title,
+    "menuTag": menuTag,
+    "menuTagKorean": menuTagKorean,
+    "menuType": menuType->{value, valueKorean},
+    "categories": categories[]->{value, valueKorean},
+    "body": body[]{
+      ...,
+      "asset": asset->url
+    }
   }`);
 
-  // Define the order of post types
-  const postTypes = ["Work", "Playground", "Bookshelf"];
-
+  // Get list of all Types
+  const postTypes = [...new Set(ogPosts.map((post) => post.menuType.value))];
   // Filter posts by type and flatten the array
   const posts = postTypes.flatMap((type) =>
-    ogPosts.filter((post) => post.type === type)
+    ogPosts.filter((post) => post.menuType.value === type)
   );
 
   return {
     props: {
       posts,
+      postTypes,
     },
   };
 }
 
-export default function Home({ posts }) {
+export default function Home({ posts, postTypes }) {
+  const [enSelected, setEnSelected] = useState(true);
+
   useEffect(() => {
+    console.log("posts from useEffect", posts);
+
     Events.scrollEvent.register("begin", function () {
       console.log("begin", arguments);
     });
@@ -63,6 +74,13 @@ export default function Home({ posts }) {
       </Head>
 
       <main className="flex font-aeonik">
+        <div
+          className="absolute top-0 left-0 
+          "
+        >
+          <button onClick={() => setEnSelected(!enSelected)}>hello</button>
+        </div>
+
         <div className="z-50">
           <Menu posts={posts} />
         </div>

@@ -19,14 +19,19 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      name: "type",
-      title: "Type",
+      name: "menuTagKorean",
+      title: "Menu Tag Korean",
       type: "string",
       validation: (Rule) => Rule.required(),
-      options: {
-        list: ["Work", "Playground", "Bookshelf"],
-      },
     },
+    {
+      name: "menuType",
+      title: "Menu Type",
+      type: "reference",
+      to: [{ type: "menuType" }],
+      validation: (Rule) => Rule.required(),
+    },
+
     {
       name: "categories",
       title: "Categories",

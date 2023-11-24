@@ -17,10 +17,10 @@ export default function Menu({ posts }) {
   }, []);
 
   // Group posts by type
-  const postTypes = ["Work", "Playground", "Bookshelf"];
+  const postTypes = [...new Set(posts.map((post) => post.menuType.value))];
   const groupedposts = postTypes.map((type) => ({
     type,
-    posts: posts.filter((post) => post.type === type),
+    posts: posts.filter((post) => post.menuType.value === type),
   }));
 
   // States for typewriter effect
