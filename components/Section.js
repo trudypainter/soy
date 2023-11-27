@@ -1,34 +1,59 @@
 // Section Component
-import BlockContent from "@sanity/block-content-to-react";
+import { PortableText } from "@portabletext/react";
+import urlBuilder from "@sanity/image-url";
+import { getImageDimensions } from "@sanity/asset-utils";
 
-const serializers = {
+const components = {
   types: {
-    block: (props) => {
-      switch (props.node.style) {
-        case "h2":
-          return <h2>{props.children}</h2>;
-        case "h3":
-          return <h3>{props.children}</h3>;
-        case "h4":
-          return <h4>{props.children}</h4>;
-        case "blockquote":
-          return <blockquote>{props.children}</blockquote>;
-        default:
-          return <p>{props.children}</p>;
-      }
+    image: ({ value }) => {
+      return <img className="my-1" src={value.asset}></img>;
     },
-    image: (props) => (
-      <>
-        <img className="my-1" src={props.node.asset} alt={props.node} />
-      </>
-    ),
+    callToAction: ({ value, isInline }) =>
+      isInline ? (
+        <a href={value.url}>{value.text}</a>
+      ) : (
+        <div className="callToAction">{value.text}</div>
+      ),
   },
+
   marks: {
-    link: ({ children, mark }) => <a href={mark.href}>{children}</a>,
+    link: ({ children, value }) => {
+      const rel = !value.href.startsWith("/")
+        ? "noreferrer noopener"
+        : undefined;
+      return (
+        <a href={value.href} rel={rel}>
+          {children}
+        </a>
+      );
+    },
   },
 };
 
 export default ({ client, post }) => {
+  console.log(post.title, post.body);
+
+  const sampleBlocks = [
+    {
+      style: "normal",
+      _type: "block",
+      children: [
+        {
+          _type: "span",
+          marks: ["a-key", "emphasis"],
+          text: "some text",
+        },
+      ],
+      markDefs: [
+        {
+          _key: "a-key",
+          _type: "markType",
+          extraData: "some data",
+        },
+      ],
+    },
+  ];
+
   return (
     <section className="border-t-[0.5px] border-black bg-white" id={post.title}>
       <div
@@ -50,12 +75,10 @@ export default ({ client, post }) => {
         </div>
       </div>
       <div className="overflow-auto p-4 px-8 phone:px-4">
-        {" "}
-        <BlockContent
-          blocks={post.body}
-          serializers={serializers}
-          projectId={client.projectId}
-          dataset={client.dataset}
+        <PortableText
+          value={post.body}
+          components={components}
+          client={client}
         />
       </div>
     </section>
