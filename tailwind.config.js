@@ -15,6 +15,9 @@ module.exports = {
         xl: "20px", // text-xl
         xs: "12px", // text-xs
       },
+      spacing: {
+        18: "4.5rem", // 1rem = 4px, so 4.5rem = 18px
+      },
     },
   },
   variants: {

@@ -108,13 +108,14 @@ export default function Menu({ posts }) {
             spy={true}
             smooth={true}
             className={`w-full phone:mb-1
+            text-xl
         hover:text-red-500 hover:cursor-pointer
         ${activeSection === "soy" ? "active" : ""}`}
           >
             SOY{currentWord.substring(0, letterIndex)}
           </Link>
           <a
-            className="hover:text-red-500 hover:cursor-pointer"
+            className="hover:text-red-500 hover:cursor-pointer text-xl"
             onClick={() => setShowAbout(!showAbout)}
           >
             <span>{showAbout ? "LESS" : "ABOUT"}</span>

@@ -70,5 +70,59 @@ export default {
         accept: "video/mp4",
       },
     },
+    {
+      title: " 1/4 text with 1/2 text",
+      name: "twoColumnLayout",
+      type: "object",
+      fields: [
+        {
+          title: "Left Column",
+          name: "left",
+          type: "blockContent",
+        },
+        {
+          title: "Right Column",
+          name: "right",
+          type: "blockContent",
+        },
+      ],
+      preview: {
+        select: {
+          left: "left[0].children[0].text",
+          right: "right[0].children[0].text",
+        },
+        prepare(selection) {
+          const { left, right } = selection;
+          return {
+            title: `${left ? left.slice(0, 30) : ""} || ${
+              right ? right.slice(0, 30) : ""
+            }`,
+          };
+        },
+      },
+    },
+    {
+      title: "1/2 Column Text",
+      name: "halfColumnText",
+      type: "object",
+      fields: [
+        {
+          title: "Text",
+          name: "text",
+          type: "blockContent",
+        },
+      ],
+      preview: {
+        select: {
+          text: "text[0].children[0].text",
+        },
+        prepare(selection) {
+          const { text } = selection;
+          return {
+            title: `${text ? text.slice(0, 30) : ""}`,
+          };
+        },
+      },
+    },
   ],
 };

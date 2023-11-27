@@ -6,7 +6,7 @@ import { getImageDimensions } from "@sanity/asset-utils";
 const components = {
   types: {
     image: ({ value }) => {
-      return <img className="my-1" src={value.asset}></img>;
+      return <img className="my-1 w-full" src={value.asset}></img>;
     },
     callToAction: ({ value, isInline }) =>
       isInline ? (
@@ -14,6 +14,21 @@ const components = {
       ) : (
         <div className="callToAction">{value.text}</div>
       ),
+    twoColumnLayout: ({ value }) => (
+      <div className="flex justify-end space-x-2">
+        <div className="w-1/4 ">
+          <PortableText value={value.left} components={components} />
+        </div>
+        <div className="w-1/2">
+          <PortableText value={value.right} components={components} />
+        </div>
+      </div>
+    ),
+    halfColumnText: ({ value }) => (
+      <div className="w-1/2">
+        <PortableText value={value.text} components={components} />
+      </div>
+    ),
   },
 
   marks: {
@@ -22,11 +37,26 @@ const components = {
         ? "noreferrer noopener"
         : undefined;
       return (
-        <a href={value.href} rel={rel}>
+        <a href={value.href} rel={rel} className="underline">
           {children}
         </a>
       );
     },
+  },
+
+  block: ({ children, style }) => {
+    switch (style) {
+      case "h2":
+        return <h2 className="text-2xl my-4">{children}</h2>;
+      case "h3":
+        return <h3 className="text-xl my-4">{children}</h3>;
+      case "h4":
+        return <h4 className="text-lg my-4">{children}</h4>;
+      case "blockquote":
+        return <blockquote className="my-4">{children}</blockquote>;
+      default:
+        return <p className="my-4">{children}</p>;
+    }
   },
 };
 
@@ -59,7 +89,7 @@ export default ({ client, post }) => {
       <div
         className="w-full border-b-[0.5px] border-black 
         flex justify-between items-center sticky top-0 
-       bg-white z-40 p-4 px-8 phone:px-4 phone:top-14"
+       bg-white z-40 p-4 px-8 phone:px-4 phone:top-18"
       >
         <div className="text-xl mr-4">{post.title}</div>
         <div className="flex flex-wrap justify-end">

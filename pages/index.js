@@ -23,12 +23,19 @@ export async function getStaticProps() {
     "categories": categories[]->{value, valueKorean},
     "body": body[]{
       ...,
-      "asset": asset->url
+      "asset": asset->url,
+      "video": video->url,
     }
   }`);
 
+  // Define the order of menuTypes
+  const menuTypesOrder = ["Work", "Playground", "Bookshelf"];
   // Get list of all Types
   const postTypes = [...new Set(ogPosts.map((post) => post.menuType.value))];
+  // Sort postTypes according to the defined order
+  postTypes.sort(
+    (a, b) => menuTypesOrder.indexOf(a) - menuTypesOrder.indexOf(b)
+  );
   // Filter posts by type and flatten the array
   const posts = postTypes.flatMap((type) =>
     ogPosts.filter((post) => post.menuType.value === type)
