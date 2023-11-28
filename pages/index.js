@@ -17,11 +17,18 @@ const client = createClient({
 export async function getStaticProps() {
   const ogPosts = await client.fetch(`*[_type == "post"]{
     "title": title,
+    "titleKorean": titleKorean,
     "menuTag": menuTag,
     "menuTagKorean": menuTagKorean,
     "menuType": menuType->{value, valueKorean},
     "categories": categories[]->{value, valueKorean},
     "body": body[]{
+      ...,
+      "asset": asset->url,
+      "video": video->url,
+      "imageGallery": imageGallery.images[].asset->url
+    },
+    "bodyKorean": bodyKorean[]{
       ...,
       "asset": asset->url,
       "video": video->url,
@@ -82,15 +89,8 @@ export default function Home({ posts, postTypes }) {
       </Head>
 
       <main className="flex font-aeonik">
-        <div
-          className="absolute top-0 left-0 
-          "
-        >
-          <button onClick={() => setEnSelected(!enSelected)}>hello</button>
-        </div>
-
         <div className="z-50">
-          <Menu posts={posts} />
+          <Menu posts={posts} enSelected={enSelected} />
         </div>
 
         <div className="flex-grow ml-[300px] phone:ml-0 w-full">
@@ -112,11 +112,38 @@ export default function Home({ posts, postTypes }) {
             <div className="bg-gray-100 mt-2 w-full h-96"></div>
           </div>
           {posts.map((post, index) => (
-            <Section key={index} client={client} post={post}></Section>
+            <Section
+              key={index}
+              client={client}
+              post={post}
+              enSelected={enSelected}
+            ></Section>
           ))}
           <div className="py-96 p-2 border-0 border-t-[0.5px] border-black">
             Thanks for making it to the end of the page! Leave a note for me...
           </div>
+        </div>
+
+        <div
+          className="fixed flex p-4 bottom-0 left-0 z-50 space-x-1 text-xs
+          "
+        >
+          <button
+            className={`px-3 py-1 border-[0.5px] rounded-full border-black text-black ${
+              enSelected ? "bg-black text-white" : ""
+            }`}
+            onClick={() => setEnSelected(true)}
+          >
+            EN
+          </button>
+          <button
+            className={`px-3 py-1 border-[0.5px] rounded-full border-black text-black ${
+              enSelected ? "" : "bg-black text-white"
+            }`}
+            onClick={() => setEnSelected(false)}
+          >
+            KR
+          </button>
         </div>
       </main>
     </>

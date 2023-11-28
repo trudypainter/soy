@@ -82,7 +82,7 @@ const components = {
   },
 };
 
-export default ({ client, post }) => {
+export default ({ client, post, enSelected }) => {
   console.log(post.title, post.body);
 
   const sampleBlocks = [
@@ -113,7 +113,9 @@ export default ({ client, post }) => {
         flex justify-between items-center sticky top-0 
        bg-white z-40 p-4 px-8 phone:px-4 phone:top-18"
       >
-        <div className="text-xl mr-4">{post.title}</div>
+        <div className="text-xl mr-4">
+          {enSelected ? post.title : post.titleKorean}
+        </div>
         <div className="flex flex-wrap justify-end">
           {post.categories.map((category, index) => (
             <div
@@ -121,14 +123,14 @@ export default ({ client, post }) => {
             whitespace-nowrap  overflow-hidden text-overflow-ellipsis"
               key={index}
             >
-              {category.value}
+              {enSelected ? category.value : category.valueKorean}
             </div>
           ))}
         </div>
       </div>
       <div className="overflow-auto p-4 px-8 phone:px-4">
         <PortableText
-          value={post.body}
+          value={enSelected ? post.body : post.bodyKorean}
           components={components}
           client={client}
         />

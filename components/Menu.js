@@ -1,7 +1,7 @@
 import { Link, animateScroll as scroll, Events, scrollSpy } from "react-scroll";
 import { useState, useEffect } from "react";
 
-export default function Menu({ posts }) {
+export default function Menu({ posts, enSelected }) {
   // Add a new state to track the active section
   const [activeSection, setActiveSection] = useState("");
 
@@ -16,11 +16,22 @@ export default function Menu({ posts }) {
     };
   }, []);
 
-  // Group posts by type
-  const postTypes = [...new Set(posts.map((post) => post.menuType.value))];
+  // Group posts by type and keep Korean type as well
+  const postTypes = Array.from(
+    new Set(
+      posts.map((post) =>
+        JSON.stringify({
+          value: post.menuType.value,
+          valueKorean: post.menuType.valueKorean,
+        })
+      )
+    ),
+    JSON.parse
+  );
   const groupedposts = postTypes.map((type) => ({
-    type,
-    posts: posts.filter((post) => post.menuType.value === type),
+    type: type.value,
+    typeKorean: type.valueKorean,
+    posts: posts.filter((post) => post.menuType.value === type.value),
   }));
 
   // States for typewriter effect
@@ -114,12 +125,12 @@ export default function Menu({ posts }) {
           >
             SOY{currentWord.substring(0, letterIndex)}
           </Link>
-          <a
+          {/* <a
             className="hover:text-red-500 hover:cursor-pointer text-xl"
             onClick={() => setShowAbout(!showAbout)}
           >
             <span>{showAbout ? "LESS" : "ABOUT"}</span>
-          </a>
+          </a> */}
         </div>
 
         <div
@@ -138,7 +149,9 @@ export default function Menu({ posts }) {
             >
               {!isPhone && (
                 <h2 className=" px-4 py-1 font-bold border-b-[0.8px] border-black ">
-                  {group.type.toUpperCase()}
+                  {enSelected
+                    ? group.type.toUpperCase()
+                    : group.typeKorean.toUpperCase()}
                 </h2>
               )}
               {group.posts.map((post, index) => (
@@ -156,8 +169,14 @@ export default function Menu({ posts }) {
                hover:text-red-500 hover:cursor-pointer phone:min-w-max 
               ${activeSection === post.id ? "active" : ""}`}
                 >
-                  <div className="">{post.title}</div>
-                  {!isPhone && <div className="text-xs">{post.menuTag}</div>}
+                  <div className="">
+                    {enSelected ? post.title : post.titleKorean}
+                  </div>
+                  {!isPhone && (
+                    <div className="text-xs">
+                      {enSelected ? post.menuTag : post.menuTagKorean}
+                    </div>
+                  )}
                 </Link>
               ))}
             </div>

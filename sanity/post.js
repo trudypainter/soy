@@ -13,6 +13,12 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
+      name: "titleKorean",
+      title: "Title Korean",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    },
+    {
       name: "menuTag",
       title: "Menu Tag",
       type: "string",
@@ -42,6 +48,12 @@ export default {
     {
       name: "body",
       title: "Body",
+      type: "blockContent",
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: "bodyKorean",
+      title: "Body Korean",
       type: "blockContent",
       validation: (Rule) => Rule.required(),
     },
