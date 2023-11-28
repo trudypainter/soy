@@ -2,6 +2,7 @@
 import { PortableText } from "@portabletext/react";
 import imageUrlBuilder from "@sanity/image-url";
 import { getImageDimensions } from "@sanity/asset-utils";
+import { useInView } from "react-intersection-observer";
 
 // Create a function to get the image URL
 function urlFor(source) {
@@ -83,7 +84,9 @@ const components = {
 };
 
 export default ({ client, post, enSelected }) => {
-  console.log(post.title, post.body);
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+  });
 
   const sampleBlocks = [
     {
@@ -107,34 +110,42 @@ export default ({ client, post, enSelected }) => {
   ];
 
   return (
-    <section className="border-t-[0.5px] border-black bg-white" id={post.title}>
-      <div
-        className="w-full border-b-[0.5px] border-black 
+    <section
+      ref={ref}
+      className="border-t-[0.5px] border-black bg-white"
+      id={post.title}
+    >
+      {inView && (
+        <>
+          <div
+            className="w-full border-b-[0.5px] border-black 
         flex justify-between items-center sticky top-0 
        bg-white z-40 p-4 px-8 phone:px-4 phone:top-18"
-      >
-        <div className="text-xl mr-4">
-          {enSelected ? post.title : post.titleKorean}
-        </div>
-        <div className="flex flex-wrap justify-end">
-          {post.categories.map((category, index) => (
-            <div
-              className="ml-2 text-xs h-fit border-[0.5px] border-black p-1 rounded-full px-2 
-            whitespace-nowrap  overflow-hidden text-overflow-ellipsis"
-              key={index}
-            >
-              {enSelected ? category.value : category.valueKorean}
+          >
+            <div className="text-xl mr-4">
+              {enSelected ? post.title : post.titleKorean}
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="overflow-auto p-4 px-8 phone:px-4">
-        <PortableText
-          value={enSelected ? post.body : post.bodyKorean}
-          components={components}
-          client={client}
-        />
-      </div>
+            <div className="flex flex-wrap justify-end">
+              {post.categories.map((category, index) => (
+                <div
+                  className="ml-2 text-xs h-fit border-[0.5px] border-black p-1 rounded-full px-2 
+            whitespace-nowrap  overflow-hidden text-overflow-ellipsis"
+                  key={index}
+                >
+                  {enSelected ? category.value : category.valueKorean}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="overflow-auto p-4 px-8 phone:px-4">
+            <PortableText
+              value={enSelected ? post.body : post.bodyKorean}
+              components={components}
+              client={client}
+            />
+          </div>
+        </>
+      )}
     </section>
   );
 };
