@@ -8,6 +8,11 @@
  *    type: 'blockContent'
  *  }
  */
+import imageGallery from "./imageGallery";
+import { FiVideo, FiImage, FiColumns } from "react-icons/fi";
+import { MdPhotoLibrary } from "react-icons/md";
+import { FaArrowRight } from "react-icons/fa";
+
 export default {
   title: "Block Content",
   name: "blockContent",
@@ -61,14 +66,16 @@ export default {
       title: "Image (Full Width)",
       type: "image",
       options: { hotspot: true },
+      icon: FiImage,
     },
     {
       title: "Video",
       name: "video",
       type: "file",
       options: {
-        accept: "video/mp4",
+        accept: "video/mp4, video/quicktime",
       },
+      icon: FiVideo,
     },
     {
       title: " 1/4 text with 1/2 text",
@@ -100,6 +107,7 @@ export default {
           };
         },
       },
+      icon: FiColumns,
     },
     {
       title: "1/2 Column Text",
@@ -123,6 +131,13 @@ export default {
           };
         },
       },
+      icon: FaArrowRight,
+    },
+    {
+      name: "imageGallery",
+      title: "Image Gallery",
+      type: "imageGallery",
+      icon: MdPhotoLibrary,
     },
   ],
 };

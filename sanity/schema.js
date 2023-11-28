@@ -3,6 +3,7 @@ import post from "./post";
 import category from "./category";
 import blockContent from "./blockContent";
 import menuType from "./menuType";
+import imageGallery from "./imageGallery";
 
 export const schema = {
   types: [
@@ -12,5 +13,6 @@ export const schema = {
     post,
     category,
     blockContent,
+    imageGallery,
   ],
 };

@@ -25,6 +25,7 @@ export async function getStaticProps() {
       ...,
       "asset": asset->url,
       "video": video->url,
+      "imageGallery": imageGallery.images[].asset->url
     }
   }`);
 

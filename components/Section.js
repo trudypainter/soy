@@ -1,7 +1,16 @@
 // Section Component
 import { PortableText } from "@portabletext/react";
-import urlBuilder from "@sanity/image-url";
+import imageUrlBuilder from "@sanity/image-url";
 import { getImageDimensions } from "@sanity/asset-utils";
+
+// Create a function to get the image URL
+function urlFor(source) {
+  const builder = imageUrlBuilder({
+    projectId: "tqbcbz9e",
+    dataset: "production",
+  });
+  return builder.image(source);
+}
 
 const components = {
   types: {
@@ -15,18 +24,31 @@ const components = {
         <div className="callToAction">{value.text}</div>
       ),
     twoColumnLayout: ({ value }) => (
-      <div className="flex justify-end space-x-2">
-        <div className="w-1/4 ">
+      <div className="flex phone:flex-col space-y-2 phone:space-y-2">
+        <div className="w-full phone:w-full">
           <PortableText value={value.left} components={components} />
         </div>
-        <div className="w-1/2">
+        <div className="w-full phone:w-full">
           <PortableText value={value.right} components={components} />
         </div>
       </div>
     ),
     halfColumnText: ({ value }) => (
-      <div className="w-1/2">
-        <PortableText value={value.text} components={components} />
+      <div className="flex justify-end">
+        <div className="w-1/2 phone:w-full ">
+          <PortableText value={value.text} components={components} />
+        </div>
+      </div>
+    ),
+    video: ({ value }) => (
+      <video className="w-full" controls src={value.asset}></video>
+    ),
+    imageGallery: ({ value, client }) => (
+      <div className="flex space-x-2 overflow-x-auto">
+        {value.images.map((image, index) => {
+          const imageUrl = urlFor(image.asset).url();
+          return <img className="h-96 object-contain" src={imageUrl}></img>;
+        })}
       </div>
     ),
   },
