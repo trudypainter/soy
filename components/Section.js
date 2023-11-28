@@ -3,6 +3,7 @@ import { PortableText } from "@portabletext/react";
 import imageUrlBuilder from "@sanity/image-url";
 import { getImageDimensions } from "@sanity/asset-utils";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image";
 
 // Create a function to get the image URL
 function urlFor(source) {
@@ -16,7 +17,9 @@ function urlFor(source) {
 const components = {
   types: {
     image: ({ value }) => {
-      return <img className="my-1 w-full" src={value.asset}></img>;
+      return (
+        <img className="my-1 w-full" src={value.asset} loading="lazy"></img>
+      );
     },
     callToAction: ({ value, isInline }) =>
       isInline ? (
@@ -48,7 +51,7 @@ const components = {
       <div className="flex space-x-2 overflow-x-auto">
         {value.images.map((image, index) => {
           const imageUrl = urlFor(image.asset).url();
-          return <img className="h-96 object-contain" src={imageUrl}></img>;
+          return <img className="h-96 " loading="lazy" src={imageUrl}></img>;
         })}
       </div>
     ),
